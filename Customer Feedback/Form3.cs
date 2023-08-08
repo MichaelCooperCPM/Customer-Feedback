@@ -23,7 +23,6 @@ namespace Customer_Feedback
         void LoadData()
         {
             //load the XML file and create a reference to all the nodes
-
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load("feedback.xml");
             XmlNodeList feedbackNodes = xDoc.SelectNodes("all_feedback/feedback");
