@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Generic; // for Lists
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.Linq; // for the .Average() method in Lists
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
-using System.Xml;
+using System.Xml; // for XML
 
 namespace Customer_Feedback
 {
