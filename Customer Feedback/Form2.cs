@@ -21,6 +21,7 @@ namespace Customer_Feedback
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // call the method when Save button clicked
             CheckXML();
         }
 
@@ -30,8 +31,10 @@ namespace Customer_Feedback
             helpLabel.Text = trackBar1.Value.ToString();
         }
 
+        // if XML file exists already, just save the entered data, otherwise create a new XML file
         void CheckXML()
         {
+ 
             if (File.Exists("feedback.xml"))
             {
                 SaveDataToXML();
@@ -42,42 +45,44 @@ namespace Customer_Feedback
             }
         }
 
+        //create new XML file and save first set of data (only runs once)
         void CreateXML()
         {
-            // get the time the user clicks the button
+            // get the time the user clicks the button to store as an attribute on the feedback element
             string now = DateTime.Now.ToString();
 
             // create settings, set indent to true
             XmlWriterSettings settings = new XmlWriterSettings();
             settings.Indent = true;
 
-            // create the xml file with applied settings
-            XmlWriter writer = XmlWriter.Create("feedback.xml",settings);
+            // create the XMLWriter machine called writer to create the xml file called feedback.xml, with settings applied
+            XmlWriter writer = XmlWriter.Create("feedback.xml", settings);
             {
-                writer.WriteStartDocument();
-                writer.WriteStartElement("all_feedback");
-                writer.WriteStartElement("feedback");
-                writer.WriteStartAttribute("date_time");
-                writer.WriteString(now);
-                writer.WriteEndAttribute();
-                writer.WriteStartElement("q1");
-                writer.WriteString(Q1Feedback());
-                writer.WriteEndElement();
-                writer.WriteStartElement("q2");
-                writer.WriteString(Q2Feedback());
-                writer.WriteEndElement();
-                writer.WriteStartElement("q3");
-                writer.WriteString(Q3Feedback());
-                writer.WriteEndElement();
-                writer.WriteEndElement();
-                writer.WriteEndDocument();
-                writer.Close();
+                writer.WriteStartDocument();                // write the xml declaration (1.0)
+                writer.WriteStartElement("all_feedback");   // open root
+                writer.WriteStartElement("feedback");       // open parent
+                writer.WriteStartAttribute("date_time");    // open parent attribute
+                writer.WriteString(now);                    // insert attribute value
+                writer.WriteEndAttribute();                 // end attribute
+                writer.WriteStartElement("q1");             // open child
+                writer.WriteString(Q1Feedback());           // insert child value
+                writer.WriteEndElement();                   // end child
+                writer.WriteStartElement("q2");             // open child / sibling
+                writer.WriteString(Q2Feedback());           // insert child / sibling value
+                writer.WriteEndElement();                   // end child
+                writer.WriteStartElement("q3");             // open child / sibling
+                writer.WriteString(Q3Feedback());           // insert child / sibling value
+                writer.WriteEndElement();                   // end child
+                writer.WriteEndElement();                   // end parent
+                writer.WriteEndDocument();                  // end root
+                writer.Close();                             // close the XmlWriter machine
             }
         }
 
+        //save data to XML file, after the XML file has already been created
         void SaveDataToXML()
         {
-            // get time user pressed button
+            // get time user pressed button for attribute
             string now = DateTime.Now.ToString();
 
             // load existing XML file
@@ -111,6 +116,7 @@ namespace Customer_Feedback
             xDoc.Save("feedback.xml");
         }
 
+        // check selected raio button, return value to CreateXML/SaveXML
         string Q1Feedback()
         {
             if (radioButton1.Checked)
@@ -135,15 +141,16 @@ namespace Customer_Feedback
             }
         }
 
+        // return the value of the trackbar to CreateXML/SaveXML
         string Q2Feedback()
         {
             return trackBar1.Value.ToString();
         }
 
+        // return the text in the rich text box CreateXML/SaveXML
         string Q3Feedback()
         {
             return richTextBox1.Text.ToString();
         }
-
     }
 }

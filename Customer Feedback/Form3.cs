@@ -36,7 +36,7 @@ namespace Customer_Feedback
             // change the text on label3 to the output of the method
             label3.Text = Q2StaffAverageScores(feedbackNodes).ToString();
 
-            // call method, passed nodes, to display all feedback in thte dataviewGrid
+            // call method, pass nodes, to display all feedback in the dataviewGrid
             Q3DisplayResponses(feedbackNodes);
         }
 
@@ -82,7 +82,7 @@ namespace Customer_Feedback
             return Math.Round(vAverage,1);
         }
 
-        // display date_time attribute and each q's elements in the datagridview object
+        // display date_time attribute and each q's values in the datagridview object
         void Q3DisplayResponses(XmlNodeList feedbackNodes)
         {
             foreach (XmlNode xNode in feedbackNodes)
