@@ -22,30 +22,33 @@ namespace Customer_Feedback
 
         void LoadData()
         {
-            // calculate and display q1 percentages for each serve time
-            label2.Text = q1PercentageServeTime("lessThan10").ToString() + "%";
-            label4.Text = q1PercentageServeTime("upTo1").ToString() + "%";
-            label6.Text = q1PercentageServeTime("upto2").ToString() + "%";
-            label8.Text = q1PercentageServeTime("over2").ToString() + "%";
+            //load the XML file and create a reference to all the nodes
+
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load("feedback.xml");
+            XmlNodeList feedbackNodes = xDoc.SelectNodes("all_feedback/feedback");
+
+            // calculate and display q1 percentages for each serve timed, pass the nodes
+            label2.Text = q1PercentageServeTime(feedbackNodes, "lessThan10").ToString() + "%";
+            label4.Text = q1PercentageServeTime(feedbackNodes, "upTo1").ToString() + "%";
+            label6.Text = q1PercentageServeTime(feedbackNodes, "upto2").ToString() + "%";
+            label8.Text = q1PercentageServeTime(feedbackNodes, "over2").ToString() + "%";
 
             // calc and display q2 staff service score
-            label3.Text = q2StaffAverageScores().ToString();
+            label3.Text = q2StaffAverageScores(feedbackNodes).ToString();
 
             // display responses to q3
-            q3DisplayResponses();
+            q3DisplayResponses(feedbackNodes);
         }
 
         // calc percentage of each time period taken to serve customer
-        double q1PercentageServeTime(string timePassed)
+        double q1PercentageServeTime(XmlNodeList feedbackNodes, string timePassed)
         {
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load("feedback.xml");
-
             double serveTimecount = 0;
             double allCount = 0;
             double percentage;
 
-            foreach (XmlNode xNode in xDoc.SelectNodes("all_feedback/feedback"))
+            foreach (XmlNode xNode in feedbackNodes)
             {
                 allCount++; // calc the number of q1 elements
 
@@ -62,18 +65,14 @@ namespace Customer_Feedback
         }
 
         // calc scores for q2
-        double q2StaffAverageScores()
+        double q2StaffAverageScores(XmlNodeList feedbackNodes)
         {
             // create a list to store the values, better than using an array as the size of the list does
             // not need to be predetermined, it will increase based on the number of q2 elements in the XML file
             List<double> staffScoresList = new List<double>();
 
-            //load the XML file
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load("feedback.xml");
-
             // get the values from each q2 element in the XML file and add them into the list
-            foreach (XmlNode xNode in xDoc.SelectNodes("all_feedback/feedback"))
+            foreach (XmlNode xNode in feedbackNodes)
             {
                 staffScoresList.Add(double.Parse(xNode.SelectSingleNode("q2").InnerText));
             }
@@ -84,14 +83,10 @@ namespace Customer_Feedback
             return Math.Round(vAverage,1);
         }
 
-        void q3DisplayResponses()
+        void q3DisplayResponses(XmlNodeList feedbackNodes)
         {
-            //load the XML file
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load("feedback.xml");
-
             // display date_time attribute and each q's elements in the datagridview object
-            foreach (XmlNode xNode in xDoc.SelectNodes("all_feedback/feedback"))
+            foreach (XmlNode xNode in feedbackNodes)
             {
                 string dateTime = xNode.Attributes["date_time"].Value;
                 string serveTime = xNode.SelectSingleNode("q1").InnerText;
