@@ -61,13 +61,13 @@ namespace Customer_Feedback
                 writer.WriteString(now);
                 writer.WriteEndAttribute();
                 writer.WriteStartElement("q1");
-                writer.WriteString(q1Feedback());
+                writer.WriteString(Q1Feedback());
                 writer.WriteEndElement();
                 writer.WriteStartElement("q2");
-                writer.WriteString(q2Feedback());
+                writer.WriteString(Q2Feedback());
                 writer.WriteEndElement();
                 writer.WriteStartElement("q3");
-                writer.WriteString(q3Feedback());
+                writer.WriteString(Q3Feedback());
                 writer.WriteEndElement();
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
@@ -93,25 +93,25 @@ namespace Customer_Feedback
 
             // create new q1, add value, append to parent
             XmlElement q1 = xDoc.CreateElement("q1");
-            q1.InnerText = q1Feedback();
+            q1.InnerText = Q1Feedback();
             feedback.AppendChild(q1);
 
             // create new q2, add value, append to parent
             XmlElement q2 = xDoc.CreateElement("q2");
-            q2.InnerText = q2Feedback();
+            q2.InnerText = Q2Feedback();
             feedback.AppendChild(q2);
 
             // create new q3, add value, append to parent
             XmlElement q3 = xDoc.CreateElement("q3");
-            q3.InnerText = q3Feedback();
+            q3.InnerText = Q3Feedback();
             feedback.AppendChild(q3);
 
             //append parent to root, save file
-            xDoc.DocumentElement.AppendChild(feedback);
+            root.AppendChild(feedback);
             xDoc.Save("feedback.xml");
         }
 
-        string q1Feedback()
+        string Q1Feedback()
         {
             if (radioButton1.Checked)
             {
@@ -135,12 +135,12 @@ namespace Customer_Feedback
             }
         }
 
-        string q2Feedback()
+        string Q2Feedback()
         {
             return trackBar1.Value.ToString();
         }
 
-        string q3Feedback()
+        string Q3Feedback()
         {
             return richTextBox1.Text.ToString();
         }
